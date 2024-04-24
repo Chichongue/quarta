@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    <script>
+        <?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+
+// Criar connexao
+$conn = new mysqli($servername, $username, $password);
+
+// verificar connexao
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+
+// Criar  database
+$sql = "CREATE DATABASE myherman";
+if ($conn->query($sql) === TRUE) {
+  echo "Database created successfully";
+} else {
+  echo "Error creating database: " . $conn->error;
+}
+
+// sql para criar  tabela
+$sql = "CREATE TABLE Myfuncionarios (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+email VARCHAR(50),
+reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)";
+
+if ($conn->query($sql) === TRUE) {
+  echo "Table Myfuncionarios created successfully";
+} else {
+  echo "Error creating table: " . $conn->error;
+}
+
+//inserir
+$sql = "INSERT INTO Myfuncionarios (firstname, lastname, email)
+VALUES ('John', 'Doe', 'john@.com')";
+VALUES ('herman', 'jose', 'herman@.com')";
+VALUES ('tobias', 'junior', 'tobi@.com')";
+
+if ($conn->query($sql) === TRUE) {
+  echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+
+//selecionar
+$sql = "SELECT id, firstname, lastname FROM Myfuncionarios";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // output da data de cada linhas
+  while($row = $result->fetch_assoc()) {
+    echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+  }
+} else {
+  echo "0 results";
+}
+
+// sql para deletar a gravacao
+$sql = "DELETE FROM Myfuncionarios WHERE id=3";
+
+if ($conn->query($sql) === TRUE) {
+  echo "Record deleted successfully";
+} else {
+  echo "Error deleting record: " . $conn->error;
+}
+// sql para update 
+$sql = "UPDATE Myfuncionarios SET lastname='Doe' WHERE id=2";
+
+if ($conn->query($sql) === TRUE) {
+  echo "Record updated successfully";
+} else {
+  echo "Error updating record: " . $conn->error;
+}
+$conn->close();
+?>
+    </script>
+</body>
+</html>
